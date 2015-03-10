@@ -45,6 +45,12 @@ module.exports = function( grunt ) {
           banner: '<%= banner %>'
         }
       }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js'
+      }
     }
 
   });
@@ -53,6 +59,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-banner');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask( 'default', [
     'jshint'
@@ -66,7 +73,8 @@ module.exports = function( grunt ) {
   ]);
 
   grunt.registerTask( 'test', [
-    'jshint'
+    'jshint',
+    'karma'
   ]);
 
 };

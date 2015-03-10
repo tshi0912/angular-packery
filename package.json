@@ -20,13 +20,20 @@
     "sungard-labs"
   ],
   "devDependencies": {
+    "angular": "^1.2.26",
+    "angular-mocks": "^1.3.14",
     "bower": "~1.3",
     "grunt": "~0.4.5",
+    "grunt-banner": "~0.2.3",
     "grunt-cli": "~0.1.13",
+    "grunt-contrib-copy": "~0.7.0",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.6.0",
-    "grunt-contrib-copy": "~0.7.0",
-    "grunt-banner": "~0.2.3"
+    "grunt-karma": "^0.10.1",
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.5"
   },
   "scripts": {
     "postinstall": "bower install",
