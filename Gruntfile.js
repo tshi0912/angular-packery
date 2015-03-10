@@ -48,8 +48,14 @@ module.exports = function( grunt ) {
     },
 
     karma: {
-      unit: {
+      options: {
         configFile: 'test/karma.conf.js'
+      },
+      headless: {
+        browsers: ['PhantomJS']
+      },
+      allbrowsers: {
+        browsers: ['PhantomJS','Chrome','ChromeCanary','Firefox','Safari']
       }
     }
 
@@ -72,9 +78,23 @@ module.exports = function( grunt ) {
     'usebanner'
   ]);
 
-  grunt.registerTask( 'test', [
-    'jshint',
-    'karma'
-  ]);
+  grunt.registerTask(
+    'test',
+    function (env) {
+      env = env || 'headless';
+
+      if (env === 'all') {
+        grunt.task.run([
+          'jshint',
+          'karma:allbrowsers'
+        ]);
+      } else {
+        grunt.task.run([
+          'jshint',
+          'karma:headless'
+        ]);
+      }
+    }
+  )
 
 };
