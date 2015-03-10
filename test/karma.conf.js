@@ -15,6 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/packery/dist/packery.pkgd.js',
+      'node_modules/draggabilly/dist/draggabilly.pkgd.js',
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'src/*.js',
