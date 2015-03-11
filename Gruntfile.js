@@ -51,11 +51,11 @@ module.exports = function( grunt ) {
       options: {
         configFile: 'test/karma.conf.js'
       },
-      headless: {
-        browsers: ['PhantomJS']
+      single: {
+        browsers: ['Chrome']
       },
       allbrowsers: {
-        browsers: ['PhantomJS','Chrome','ChromeCanary','Firefox','Safari']
+        browsers: ['Chrome','ChromeCanary','Firefox','Safari']
       }
     }
 
@@ -91,7 +91,7 @@ module.exports = function( grunt ) {
       } else {
         grunt.task.run([
           'jshint',
-          'karma:headless'
+          'karma:single'
         ]);
       }
     }
