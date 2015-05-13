@@ -26,7 +26,8 @@
       'itemSelector',
       'rowHeight',
       'transitionDuration',
-      'isAppended'
+      'isAppended',
+	  'percentPosition'
     ]
   };
 
@@ -187,7 +188,8 @@
         transitionDuration: '@?', // Type: String
         isAppended: '@?', // Type: Boolean
         draggable: '@?', // Type: Boolean
-        handle: '@?' // Type: Boolean
+        handle: '@?', // Type: Boolean
+		percentPosition: '@?' // Type: Boolean
 
         // Let's come back to this one...
         // stamp: '@?',
