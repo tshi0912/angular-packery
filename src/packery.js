@@ -58,7 +58,7 @@
             packery: packeryObj
           });
           el.data('Packery', packeryObj);
-          $rootScope.$emit('packeryInstantiated', packeryObj);
+          $rootScope.$emit('packeryInstantiated', packeryObj, hash);
           return packeryObj;
         } else {
           var interval = $interval(function(){
@@ -79,14 +79,14 @@
     };
   };
 
-  var packeryController = function ($rootScope, config, service) {
+  var packeryController = function ($scope, $rootScope, config, service) {
 
     var self = this;
 
     self.packeryInstantiated = false;
     self.packeryDraggable = false;
     self.dragHandle = undefined;
-    self.uniqueId = new Date().getTime();
+    //self.uniqueId = new Date().getTime();
     self.packery = {};
 
     this.bindDragEvents = function(el) {
@@ -138,26 +138,41 @@
     };
 
     this.packObject = function (el) {
-      var promise = service.Packery(self.uniqueId);
+      var promise = service.Packery($scope.hash);
 
       promise.then(function () {
-        var packeryEls = self.packery.getItemElements();
+        if(self.packery instanceof Packery) {
+            var packeryEls = self.packery.getItemElements();
 
-        if (packeryEls.indexOf(el[0]) === -1) {
-          if (self.packery.options.isAppended === 0) {
-            self.packery.prepended(el[0]);
-          } else {
-            self.packery.appended(el[0]);
-          }
+            if (packeryEls.indexOf(el[0]) === -1) {
+                if (self.packery.options.isAppended === 0) {
+                    self.packery.prepended(el[0]);
+                } else {
+                    self.packery.appended(el[0]);
+                }
+            }
+
+            if (self.packeryDraggable === true) {
+                self.bindDragEvents(el);
+            }
+
+            el.css('visibility', 'visible');
+            $rootScope.$emit('packeryObjectPacked', el[0]);
         }
-
-        if (self.packeryDraggable === true) {
-          self.bindDragEvents(el);
-        }
-
-        el.css('visibility','visible');
-        $rootScope.$emit('packeryObjectPacked', el[0]);
       });
+    };
+
+    this.unpackObject = function(el){
+        var promise = service.Packery($scope.hash);
+        promise.then(function(){
+            var packeryEls = self.packery.getItemElements();
+
+            if (packeryEls.indexOf(el[0]) !== -1) {
+                self.packery.remove(el[0]);
+            }
+
+            $rootScope.$emit('packeryObjectUnpacked', el[0], self.packery);
+        });
     };
 
     this.setDraggable = function (handle) {
@@ -175,6 +190,7 @@
       replace: true,
       templateUrl: 'template/packery/packery.html',
       scope: {
+        hash:'=', // Type: Hash String
         containerStyle: '=?', // Type: Object, null
         columnWidth: '@?', // Type: Number, Selector String
         gutter: '@?', // Type: Number, Selector String
@@ -223,7 +239,8 @@
 
         // Create object for Packery instantiation
         packeryObj = controller.createAttrObj(scope);
-        packeryId = controller.uniqueId;
+        //packeryId = controller.uniqueId;
+        packeryId = scope.hash;
 
         // Instantiate Packery and broadcast event
         packery = service.Packery(packeryId, element, packeryObj);
@@ -255,6 +272,10 @@
 
         // Packs individual objects
         controller.packObject(element);
+
+        element.on('$destroy', function(){
+            controller.unpackObject(element);
+        });
       }
     };
   };
@@ -278,7 +299,7 @@
     .module('angular-packery', moduleDependencies)
     .constant('packeryConfig', moduleConfig)
     .service('packeryService', [ '$rootScope', '$q', '$interval', '$timeout', 'packeryConfig', packeryService ])
-    .controller('PackeryController', [ '$rootScope', 'packeryConfig', 'packeryService', packeryController ])
+    .controller('PackeryController', [ '$scope', '$rootScope', 'packeryConfig', 'packeryService', packeryController ])
     .directive('packery', [ 'packeryConfig', 'packeryService', packeryDirective ])
     .directive('packeryObject', [ packeryObjectTemplateDirective ])
     .directive('packeryObject', [ packeryObjectDirective ]);
