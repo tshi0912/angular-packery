@@ -27,7 +27,7 @@
       'rowHeight',
       'transitionDuration',
       'isAppended',
-	  'percentPosition'
+      'percentPosition'
     ]
   };
 
@@ -205,7 +205,7 @@
         isAppended: '@?', // Type: Boolean
         draggable: '@?', // Type: Boolean
         handle: '@?', // Type: Boolean
-		percentPosition: '@?' // Type: Boolean
+        percentPosition: '@?' // Type: Boolean
 
         // Let's come back to this one...
         // stamp: '@?',
@@ -237,7 +237,8 @@
         // Set global draggability
         if (scope.draggable) { controller.setDraggable(scope.handle); }
 		
-		if (!scope.hash){scope.hash = new Date().getTime();}
+        // Set hash if it's absence
+        if (!scope.hash){scope.hash = new Date().getTime();}
 		
         // Create object for Packery instantiation
         packeryObj = controller.createAttrObj(scope);
