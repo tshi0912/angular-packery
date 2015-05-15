@@ -236,7 +236,9 @@
 
         // Set global draggability
         if (scope.draggable) { controller.setDraggable(scope.handle); }
-
+		
+		if (!scope.hash){scope.hash = new Date().getTime();}
+		
         // Create object for Packery instantiation
         packeryObj = controller.createAttrObj(scope);
         //packeryId = controller.uniqueId;
