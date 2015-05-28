@@ -103,6 +103,10 @@
         });
         handle = el[0].querySelectorAll(handleSelector);
       }
+	  
+	  draggabilly.on('dragEnd', function(){
+          el.trigger('dragEnd');
+      });
 
       // Init Draggabilly events
       self.packery.bindDraggabillyEvents(draggabilly);
